@@ -3,8 +3,8 @@ from flask_restx import Namespace,Resource,fields
 from flask_jwt_extended import jwt_required,get_jwt_identity
 from http import HTTPStatus
 from ..utils.db import db
-from models.cars import Car
-from models.citizens import Citizen
+from ..models.cars import Car
+from ..models.citizens import Citizen
 from werkzeug.exceptions import BadRequest
 
 car_namespace=Namespace('cars',description="Namespace for cars")
@@ -78,7 +78,7 @@ class CarGetCreate(Resource):
             car_type = data['car_type']
         )
 
-        new_car.owner=current_user
+        new_car.car_owner=current_user
 
         new_car.save()
 

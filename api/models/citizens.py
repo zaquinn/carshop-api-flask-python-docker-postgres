@@ -10,7 +10,7 @@ class Citizen(db.Model):
     last_name = db.Column(db.String(25),nullable=True)
     password_hash=db.Column(db.Text(),nullable=False)
     is_sale_opportunity=db.Column(db.Boolean(),default=True)
-    cars=db.relationship('Car',backref='owner',lazy=True)
+    cars=db.relationship('Car',backref='car_owner',lazy=True)
 
     def __repr__(self):
         f"<Citizen {self.id} {self.username}>"

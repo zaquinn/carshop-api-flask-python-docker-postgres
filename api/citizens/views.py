@@ -3,7 +3,7 @@ from flask_restx import Namespace,Resource,fields
 from flask_jwt_extended import jwt_required,get_jwt_identity
 from http import HTTPStatus
 from ..utils.db import db
-from models.citizens import Citizen
+from ..models.citizens import Citizen
 from werkzeug.security import generate_password_hash
 
 citizen_namespace=Namespace('citizens',description="Namespace for citizens")

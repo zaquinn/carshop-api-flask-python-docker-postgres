@@ -1,14 +1,14 @@
 from flask import Flask
-from .config.config import config_dict
-from .utils.db import db
-from flask_restx import Api
-from flask_migrate import Migrate
 from .auth.views import auth_namespace
-from models.cars import Car
-from models.citizens import Citizen
 from .cars.views import car_namespace
 from .citizens.views import citizen_namespace
+from .config.config import config_dict
+from .models.cars import Car
+from .models.citizens import Citizen
+from .utils.db import db
+from flask_restx import Api
 from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
 
 def create_app(config=config_dict["dev"]):
     app = Flask(__name__)

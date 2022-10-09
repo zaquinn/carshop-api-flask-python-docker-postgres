@@ -6,7 +6,7 @@ from http import HTTPStatus
 from flask_jwt_extended import (create_access_token,
 create_refresh_token,jwt_required,get_jwt_identity)
 from werkzeug.exceptions import Conflict,BadRequest
-from models.citizens import Citizen
+from ..models.citizens import Citizen
 
 auth_namespace=Namespace('auth',description="a namespace for authentication routes")
 
@@ -72,7 +72,7 @@ class SignUp(Resource):
             return new_citizen_return , HTTPStatus.CREATED
 
         except Exception as e:
-            raise Conflict(f"Citizen with email {data.get('email')} exists")
+            raise Conflict(f"{e}")
 
 
 auth_namespace.route('/login')
