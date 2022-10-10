@@ -60,6 +60,7 @@ class SignUp(Resource):
             )
 
             new_citizen_return = {
+                "id": new_citizen.id,
                 "username": new_citizen.username,
                 "email": new_citizen.email,
                 "first_name": new_citizen.first_name,
@@ -67,15 +68,19 @@ class SignUp(Resource):
                 "cars": new_citizen.cars
             }
 
+
+
             new_citizen.save()
 
             return new_citizen_return , HTTPStatus.CREATED
 
         except Exception as e:
-            raise Conflict(f"{e}")
+            if f"{type(e)}" == "<class 'sqlalchemy.exc.IntegrityError'>":
+                raise BadRequest({"obrigatory fields": "username, email, password", "optional fields": "first_name, last_name"})
+            raise Conflict(f"{e}, type: {type(e)}")
 
 
-auth_namespace.route('/login')
+@auth_namespace.route('/login')
 class Login(Resource):
 
     @auth_namespace.expect(login_model)

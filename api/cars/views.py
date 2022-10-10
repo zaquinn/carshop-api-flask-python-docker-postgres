@@ -7,17 +7,33 @@ from ..models.cars import Car
 from ..models.citizens import Citizen
 from werkzeug.exceptions import BadRequest
 
+citizen_namespace=Namespace('citizens',description="Namespace for citizens")
+
+citizen_model=citizen_namespace.model(
+    'Citizen',{
+        'id':fields.Integer(description="An ID"),
+        'email':fields.String(description="An email"),
+        'username':fields.String(description="A username"),
+        'first_name':fields.String(description="A first name"),
+        'last_name':fields.String(description="A last name"),
+        'is_sale_opportunity':fields.Boolean(description="Says if a citizen is a sale opportunity",default=True)
+    }
+)
+
 car_namespace=Namespace('cars',description="Namespace for cars")
 
 car_model=car_namespace.model(
     'Car',{
         'id':fields.Integer(description="An ID"),
-        'color':fields.String(description="The car color",required=True,
+        'model':fields.String(description="A car model"),
+        'brand':fields.String(description="A car brand"),
+        'color':fields.String(description="The car color",default="Not Specified",
             enum=['Yellow','Blue','Gray','Not Specified']
         ),
         'car_type':fields.String(description="The car type",
-            required=True, enum=['Hatch','Sedan','Convertible','Not Specified']
-        )
+            default="Not Specified", enum=['Hatch','Sedan','Convertible','Not Specified']
+        ),
+        'car_owner':fields.List(fields.Nested(citizen_model))
     }
 )
 
@@ -74,8 +90,8 @@ class CarGetCreate(Resource):
         new_car=Car(
             model=data['model'],
             brand=data['brand'],
-            color=data['color'],
-            car_type = data['car_type']
+            color=data.get('color'),
+            car_type = data.get('color')
         )
 
         new_car.car_owner=current_user
@@ -113,7 +129,7 @@ class GetUpdateDelete(Resource):
         }
     )
     @jwt_required()
-    def put(self,car_id):
+    def patch(self,car_id):
 
         """
             Update an car with id
@@ -124,10 +140,10 @@ class GetUpdateDelete(Resource):
 
         data=car_namespace.payload
 
-        car_to_update.model=data['model']
-        car_to_update.brand=data['brand']
-        car_to_update.color=data['color']
-        car_to_update.car_type=data['car_type']
+        car_to_update.model=data.get('model', car_to_update.model)
+        car_to_update.brand=data.get('brand', car_to_update.brand)
+        car_to_update.color=data.get('color', car_to_update.color)
+        car_to_update.car_type=data.get('car_type', car_to_update.car_type)
 
         db.session.commit()
 
