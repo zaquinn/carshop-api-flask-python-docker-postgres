@@ -2,15 +2,13 @@ services:
   db:
     image: postgres:latest
     env_file: .env
-    ports:
-      - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
 
   migration:
     build: .
     env_file: .env
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; flask db init && flask db migrate -m "Initial migration." && flask db upgrade'
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; export FLASK_APP=api/ && flask db init && flask db migrate -m "Initial migration." && flask db upgrade'
     volumes:
       - .:/app
     depends_on:
