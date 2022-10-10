@@ -1,0 +1,61 @@
+# carshop-api-flask-python-docker-postgres
+
+Este projeto é uma API em Flask + Python + Postgres + Docker que visa gerenciar um CRUD de pessoas e carros.
+
+## Instruções para rodar em servidor local
+
+Clone o repositório do projeto
+
+```
+git clone https://github.com/zaquinn/carshop-api-flask-python-docker-postgres.git
+```
+
+Entre na pasta do projeto e crie o ambiente virtual
+
+```
+$ cd https://github.com/zaquinn/carshop-api-flask-python-docker-postgres.git
+
+$ python -m venv venv
+```
+
+Ative o ambiente virtual
+
+```
+$ source venv/bin/activate #Linux
+```
+
+Instale os requerimentos
+
+```
+$ pip install -r requirements.txt
+```
+
+Rode o projeto em desenvolvimento
+
+```
+python runserver.py
+```
+
+
+
+```
+migration:
+    build: .
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; flask db init && flask db migrate -m "Initial migration." && flask db upgrade'
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+
+  web:
+    build: .
+    env_file: .env
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python runserver.py'
+    volumes:
+      - .:/app
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+      - migration
+```

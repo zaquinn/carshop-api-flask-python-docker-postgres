@@ -15,7 +15,7 @@ class Config:
     JWT_SECRET_KEY=config('JWT_SECRET_KEY')
     
 class DevConfig(Config):
-    SQLALCHEMY_DATABASE_URI="postgresql://realiz3d:1234@localhost/carshop_flask"
+    SQLALCHEMY_DATABASE_URI=os.getenv("DATABASE_URL", "sqlite://")
     SQLALCHEMY_TRACK_MODIFICATIONS=False
     SQLALCHEMY_ECHO=True
     DEBUG=True

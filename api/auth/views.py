@@ -76,7 +76,7 @@ class SignUp(Resource):
 
         except Exception as e:
             if f"{type(e)}" == "<class 'sqlalchemy.exc.IntegrityError'>":
-                raise BadRequest({"obrigatory fields": "username, email, password", "optional fields": "first_name, last_name"})
+                raise BadRequest({"obrigatory fields": "username, email, password", "optional fields": "first_name, last_name", "alert": "User might be already registered"})
             raise Conflict(f"{e}, type: {type(e)}")
 
 

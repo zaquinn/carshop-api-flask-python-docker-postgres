@@ -1,18 +1,15 @@
 services:
   db:
+    container_name: db
     image: postgres:latest
-    env_file: .env
     volumes:
       - pgdata:/var/lib/postgresql/data
-
-  migration:
-    build: .
-    env_file: .env
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; export FLASK_APP=api/ && flask db init && flask db migrate -m "Initial migration." && flask db upgrade'
-    volumes:
-      - .:/app
-    depends_on:
-      - db
+    environment:
+      - POSTGRES_USER=realiz3d
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=carshop_flask
+    ports:
+      - 5433:5432
 
   web:
     build: .
@@ -20,14 +17,10 @@ services:
     command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python runserver.py'
     volumes:
       - .:/app
-    stdin_open: true
-    tty: true
     ports:
       - 5000:5000
-
     depends_on:
       - db
-      - migration
 
 volumes:
   pgdata:
