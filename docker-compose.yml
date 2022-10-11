@@ -9,12 +9,11 @@ services:
       - POSTGRES_PASSWORD=1234
       - POSTGRES_DB=carshop_flask
     ports:
-      - 5433:5432
+      - 5432:5432
 
   web:
     build: .
     env_file: .env
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python runserver.py'
     volumes:
       - .:/app
     ports:

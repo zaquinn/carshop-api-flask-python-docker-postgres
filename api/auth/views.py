@@ -59,18 +59,18 @@ class SignUp(Resource):
                 last_name=data.get("last_name")
             )
 
-            new_citizen_return = {
-                "id": new_citizen.id,
-                "username": new_citizen.username,
-                "email": new_citizen.email,
-                "first_name": new_citizen.first_name,
-                "last_name": new_citizen.last_name,
-                "cars": new_citizen.cars
-            }
-
-
-
             new_citizen.save()
+
+            citizen=Citizen.query.filter_by(username=data.get('username')).first()
+
+            new_citizen_return = {
+                "id": citizen.id,
+                "username": citizen.username,
+                "email": citizen.email,
+                "first_name": citizen.first_name,
+                "last_name": citizen.last_name,
+                "cars": citizen.cars
+            }
 
             return new_citizen_return , HTTPStatus.CREATED
 
