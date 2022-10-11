@@ -1,6 +1,6 @@
 # carshop-api-flask-python-docker-postgres
 
-Este projeto é uma API em Flask + Python + Postgres + Docker que visa gerenciar um CRUD de pessoas e carros.
+Este projeto é uma API em Flask + Python + Postgres + Docker que visa gerenciar um CRUD de pessoas e carros. A documentação da aplicação pode ser obtida ao rodá-la, no endereço de desenvolvimento: http://localhost:5000/
 
 Stacks utilizadas:
 
